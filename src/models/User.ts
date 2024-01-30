@@ -1,7 +1,12 @@
 import mongoose from "mongoose"
 
+export interface user {
+    username: string,
+    password: string,
+}
+
 /// create a schema
-const userSchema =  new mongoose.Schema({
+const userSchema =  new mongoose.Schema<user>({
     username: {
         type: String,
         required: true

@@ -1,5 +1,10 @@
 import mongoose from "mongoose"
 
+export interface flow {
+    user: mongoose.Types.ObjectId,
+    content: mongoose.Types.Array<string>
+}
+
 /// Flow schema
 const flowSchema = new mongoose.Schema({
     user: {
@@ -14,6 +19,6 @@ const flowSchema = new mongoose.Schema({
 })
 
 /// Flow model
-const Flow = new mongoose.Model('Flow', flowSchema)
+const Flow = mongoose.model('Flow', flowSchema)
 
 export default Flow

@@ -1,10 +1,14 @@
 import { Request, Response } from "express"
+import Flow from "../models/Flow"
 
 // @desc Get all flows
 // @route GET /flows
 // @access Private
 const getAllFlows = async (req: Request, res: Response) => {
-    console.log('In get all flows...')   
+    console.log('In get all flows...') 
+    
+    const result = await Flow.find()
+
     res.send("GET /flows")
 }
 
