@@ -1,5 +1,7 @@
 import { Request, Response } from "express"
+import mongoose from "mongoose"
 import Flow from "../models/Flow"
+import { RequestBody } from "../interfaces/RequestBody"
 
 // @desc Get all flows
 // @route GET /flows
@@ -36,6 +38,7 @@ const saveFlow = async (req: Request, res: Response) => {
 
     if (duplicate)
     {
+        console.log("Duplicate ", duplicate)
         return res.status(400).json({ message: 'Title exists! Create a new title for this flow!'})
     }
 
@@ -47,8 +50,46 @@ const saveFlow = async (req: Request, res: Response) => {
     } else { /// failed
         return res.status(400).json({ message: "Failed to save the flow!"})
     }
-
-    res.send("POST /flows")
 }
 
-export { getAllFlows, saveFlow }
+// @desc Update a flow
+// @route PATCH /flows
+// @access PRIVATE
+const updateFlow =async (req: RequestBody<{id: string, user: string, title: string, content: mongoose.Types.Array<string>}>, res: Response) => {
+    
+    const { id, user, title, content } = req.body 
+
+    /// Missing some fields
+    if (!id || !user || !title || !content)
+    {
+        return res.status(400).json({ message: 'All fields are required!'})
+    }
+
+    /// check if content is not array
+    if (!(content instanceof Array))
+    {
+        console.log("Content from HTTP req ", content)
+        return res.status(400).json({ message: 'Invalid content!!!'})
+    }
+
+    /// Check for existence
+    const flow = await Flow.findById(id)
+
+    if (!flow)
+    {
+        return res.status(400).json({ message: 'Flow does not exist in database!'})
+    }
+
+    /// Exists
+    flow!.user = user
+    flow!.title = title
+    flow!.content = content
+
+    const updateFlow = await flow!.save()
+
+    console.log("update flowwwwwwwwwww", updateFlow)
+    
+    return res.status(201).json({ message: "Update flow successfully!"})
+}
+
+export { getAllFlows, saveFlow, updateFlow }
