@@ -11,7 +11,10 @@ const getAllFlows = async (req: Request, res: Response) => {
 
     console.log("flowsssssssssssss ", flows)
 
-    res.send("GET /flows")
+    // res.send("GET /flows")
+    res.send(flows)
+
+    return flows
 }
 
 // @desc Save current flow
@@ -24,7 +27,7 @@ const saveFlow = async (req: Request, res: Response) => {
 
     /// Confirm if enough data provided
     if (!user || !title || !content)
-    {
+    {   
         return res.status(400).json({ message: 'All fields are required!!!'})
     }
 

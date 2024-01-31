@@ -1,14 +1,15 @@
 import mongoose from "mongoose"
 
 export interface flow {
-    user: mongoose.Types.ObjectId,
+    user: string,
+    title: string,
     content: mongoose.Types.Array<string>
 }
 
 /// Flow schema
-const flowSchema = new mongoose.Schema({
+const flowSchema = new mongoose.Schema<flow>({
     user: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         required: true,
         ref: 'User'
     },
@@ -20,6 +21,8 @@ const flowSchema = new mongoose.Schema({
         type: [String],
         require: true 
     }
+}, {
+    collection: 'Flows'
 })
 
 /// Flow model

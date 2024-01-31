@@ -15,7 +15,7 @@ const userSchema =  new mongoose.Schema<user>({
         type: String,
         required: true
     },
-})
+}, { collection: 'Users'})
 
 
 /// Actual model

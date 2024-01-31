@@ -1,9 +1,11 @@
 require('dotenv').config()
 import express from 'express'
 import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
+
+
 import rootRoute from './src/routes/root'
 import flowRoute from './src/routes/flowsRoute'
-
 import connectToMongo from './src/configs/dbConnection'
 
 
@@ -14,6 +16,7 @@ connectToMongo()
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: true}))
 
 app.use('/', rootRoute)
 app.use('/flows', flowRoute)
