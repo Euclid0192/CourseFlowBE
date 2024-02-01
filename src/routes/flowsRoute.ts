@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getAllFlows, saveFlow, updateFlow } from '../controllers/flowsController'
+import { deleteFlow, getAllFlows, saveFlow, updateFlow } from '../controllers/flowsController'
 
 const router = Router()
 
@@ -7,5 +7,6 @@ router.route('/')
     .get(getAllFlows)
     .post(saveFlow)
     .patch(updateFlow)
+    .delete(deleteFlow)
 
 export default router

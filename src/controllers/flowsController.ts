@@ -92,4 +92,29 @@ const updateFlow =async (req: RequestBody<{id: string, user: string, title: stri
     return res.status(201).json({ message: "Update flow successfully!"})
 }
 
-export { getAllFlows, saveFlow, updateFlow }
+// @desc Delete a flow
+// @route DELETE /flows
+// @acess PRIVATE
+const deleteFlow =async (req: RequestBody<{id: string, title: string}>, res: Response) => {
+    const { id } = req.body
+
+    /// Check if null data
+    if (!id)
+    {
+        return res.status(400).json({ message: "All fields are required!"});
+    }
+
+    /// Check for existence 
+    const flow = await Flow.findById(id)
+
+    if (!flow)
+    {
+        return res.status(400).json({ message: 'Flow does not exist in database!!!'})
+    }
+
+    const response = await Flow.findByIdAndDelete(id)
+
+    res.json(response)
+}
+
+export { getAllFlows, saveFlow, updateFlow, deleteFlow }
