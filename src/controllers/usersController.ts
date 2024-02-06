@@ -1,7 +1,9 @@
 import { Request, Response } from "express"
+import bcrypt from "bcrypt"
 import User from "../models/User"
 import { RequestBody } from "../interfaces/RequestBody"
 
+const saltRounds = 10
 /// @desc get user information
 /// @route GET /user
 /// @access private
@@ -48,13 +50,15 @@ const createNewUser = async (req: RequestBody<{username: string, password: strin
     }
 
     // console.log("User returned from mongoose query ", user)
+    
 
-    const newUser = await User.create({ username, password })
+    const hashPassword = await bcrypt.hash(password, saltRounds)
+    const newUser = await User.create({ username, password: hashPassword })
 
     if (!newUser)
         return res.status(400).json({ message: "Failed to create new user."})
 
-    return res.status(201).json({ message: `User ${newUser.username} with password ${newUser.password} created!`})
+    return res.status(201).json({ message: `User ${newUser.username} with password after hashing ${newUser.password} created!`})
 }
 
 /// @desc edit user info
