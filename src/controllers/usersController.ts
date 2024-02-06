@@ -64,7 +64,7 @@ const createNewUser = async (req: RequestBody<{username: string, password: strin
 /// @desc edit user info
 /// @route PATCH /user
 /// @access private
-const updateUser =async (req: RequestBody<{username: string, password: string }>, res: Response) => {
+const updateUser = async (req: RequestBody<{username: string, password: string }>, res: Response) => {
     
     const { username, password } = req.body
 
@@ -83,7 +83,7 @@ const updateUser =async (req: RequestBody<{username: string, password: string }>
 
     const updateUser = await user.save()
 
-    return res.status(201).json({ message: `User ${user.username} with password ${user.password} `})
+    return res.status(201).json({ message: `User ${updateUser.username} with password ${updateUser.password} `})
 }
 
 /// @desc delete an user
@@ -109,8 +109,6 @@ const deleteUser =async (req: RequestBody<{username: string}>, res: Response) =>
 
     return res.status(201).json({ message: `User ${user.username} deleted!`})
 }
-
-
 
 export {
     getUserInfo,
