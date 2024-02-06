@@ -6,6 +6,7 @@ import bodyParser from 'body-parser'
 
 import rootRoute from './src/routes/root'
 import flowRoute from './src/routes/flowsRoute'
+import userRoute from './src/routes/usersRoute'
 import connectToMongo from './src/configs/dbConnection'
 
 
@@ -20,6 +21,11 @@ app.use(bodyParser.urlencoded({ extended: true}))
 
 app.use('/', rootRoute)
 app.use('/flows', flowRoute)
+app.use('/user', userRoute)
+
+app.use('*', (req, res) => {
+    res.json({ message: "404 not found"})
+})
 
 app.listen(PORT, () => {
     console.log("Connect on port 3000...")
