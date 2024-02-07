@@ -3,10 +3,11 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 
-
 import rootRoute from './src/routes/root'
 import flowRoute from './src/routes/flowsRoute'
 import userRoute from './src/routes/usersRoute'
+import authRoute from './src/routes/authRoute'
+
 import connectToMongo from './src/configs/dbConnection'
 
 
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true}))
 app.use('/', rootRoute)
 app.use('/flows', flowRoute)
 app.use('/user', userRoute)
+app.use('/auth', authRoute)
 
 app.use('*', (req, res) => {
     res.json({ message: "404 not found"})

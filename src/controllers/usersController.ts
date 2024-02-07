@@ -3,7 +3,6 @@ import bcrypt from "bcrypt"
 import User from "../models/User"
 import { RequestBody } from "../interfaces/RequestBody"
 
-const saltRounds = 10
 /// @desc get user information
 /// @route GET /user
 /// @access private
@@ -52,7 +51,7 @@ const createNewUser = async (req: RequestBody<{username: string, password: strin
     // console.log("User returned from mongoose query ", user)
     
 
-    const hashPassword = await bcrypt.hash(password, saltRounds)
+    const hashPassword = await bcrypt.hash(password, process.env.SALT!)
     const newUser = await User.create({ username, password: hashPassword })
 
     if (!newUser)
