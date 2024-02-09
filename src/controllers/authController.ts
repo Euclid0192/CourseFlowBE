@@ -39,7 +39,7 @@ const login = async (req: RequestBody<{ username: string, password: string}>, re
         },
         process.env.SECRET_ACCESS_TOKEN!,
         {
-            expiresIn: '1d'
+            expiresIn: '1m'
         }
     )
 
@@ -108,7 +108,7 @@ const signup = async (req: RequestBody<{ username: string, password: string}>, r
 const logout = async (req: Request, res: Response) => {
     const cookies = req.cookies
 
-    if (!cookies?.jwt)
+    if (!cookies?.refreshToken)
         return res.status(400).json({ message: 'No cookies'})
 
     res.clearCookie('refreshToken', { httpOnly: true })
