@@ -87,7 +87,7 @@ const signup = async (req: RequestBody<{ username: string, password: string}>, r
     
     if (user)
     {
-        return res.status(400).json({ message: "This username currently exists. Please try to log in."})
+        return res.status(400).json({ message: "This user currently exists. Please try to log in."})
     }
 
     // console.log("User returned from mongoose query ", user)
