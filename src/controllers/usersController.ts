@@ -51,7 +51,7 @@ const createNewUser = async (req: RequestBody<{username: string, password: strin
     // console.log("User returned from mongoose query ", user)
     
 
-    const hashPassword = await bcrypt.hash(password, process.env.SALT!)
+    const hashPassword = await bcrypt.hash(password, Number(process.env.SALT!))
     const newUser = await User.create({ username, password: hashPassword })
 
     if (!newUser)
