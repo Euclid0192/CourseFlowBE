@@ -1,15 +1,29 @@
 import mongoose from "mongoose"
 
+export type position = {
+    x: number,
+    y: number,
+}
+
+const positionSchema = new mongoose.Schema<position>({
+    x: Number,
+    y: Number
+})
+
 /// Custom node type
 export type node = {
     nodeId: string,
     title: string,
+    type: string,
+    position: position
 }
 
 /// custom node schema
 const nodeSchema = new mongoose.Schema<node>({
     nodeId: String,
     title: String,
+    type: String, /// usersCreated or generated
+    position: positionSchema
 })
 
 /// custom edge type
@@ -35,7 +49,6 @@ const edgeSchema = new mongoose.Schema<edge>({
 export interface flow {
     user: string,
     title: string,
-    type: string,
     nodes:  mongoose.Types.Array<node>,
     edges: mongoose.Types.Array<edge>
 }
@@ -50,10 +63,6 @@ const flowSchema = new mongoose.Schema<flow>({
     title: {
         type: String,
         required: true,
-    },
-    type: {
-        type: String,
-        require: true,
     },
     nodes: {
         type: [nodeSchema],
