@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import mongoose from "mongoose"
-import Flow, { edge } from "../models/Flow"
+import Flow, { edge, node } from "../models/Flow"
 import { RequestBody } from "../interfaces/RequestBody"
 
 // @desc Get all flows
@@ -25,11 +25,12 @@ const getAllFlows = async (req: Request, res: Response) => {
 const saveFlow = async (req: Request, res: Response) => {
     console.log('In save flow...')
 
-    const { user, title, nodes, edges } = req.body
+    const { user, title, type, nodes, edges } = req.body
 
     /// Confirm if enough data provided
-    if (!user || !title || !Array.isArray(nodes) || nodes.length == 0 || !Array.isArray(edges) || edges.length == 0)
+    if (!user || !title || !type || !Array.isArray(nodes) || nodes.length == 0 || !Array.isArray(edges))
     {   
+        console.log(!Array.isArray(nodes))
         return res.status(400).json({ message: 'All fields are required!!!'})
     }
 
@@ -43,7 +44,7 @@ const saveFlow = async (req: Request, res: Response) => {
     }
 
     /// No duplicate -> create note
-    const createFlow = await Flow.create({ user, title, nodes, edges })
+    const createFlow = await Flow.create({ user, title, type, nodes, edges })
 
     if (createFlow) { /// success
         return res.status(201).json({ message: "Save flow to account!"})
@@ -55,13 +56,13 @@ const saveFlow = async (req: Request, res: Response) => {
 // @desc Update a flow
 // @route PATCH /flows
 // @access PRIVATE
-const updateFlow =async (req: RequestBody<{id: string, user: string, title: string, nodes: mongoose.Types.Array<string>,
+const updateFlow =async (req: RequestBody<{id: string, user: string, title: string, type: string, nodes: mongoose.Types.Array<node>,
                                     edges: mongoose.Types.Array<edge>}>, res: Response) => {
     
-    const { id, user, title, nodes, edges } = req.body 
+    const { id, user, type, title, nodes, edges } = req.body 
 
     /// Missing some fields
-    if (!id || !user || !title || !Array.isArray(nodes) || nodes.length == 0 || !Array.isArray(edges) || edges.length == 0)
+    if (!id || !user || !title || !type || !Array.isArray(nodes) || nodes.length == 0 || !Array.isArray(edges) || edges.length == 0)
     {
         return res.status(400).json({ message: 'All fields are required!'})
     }
@@ -84,6 +85,7 @@ const updateFlow =async (req: RequestBody<{id: string, user: string, title: stri
     /// Exists
     flow!.user = user
     flow!.title = title
+    flow!.type = type
     flow!.nodes = nodes
     flow!.edges = edges
 

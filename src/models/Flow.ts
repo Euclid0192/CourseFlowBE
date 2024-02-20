@@ -1,5 +1,18 @@
-import mongoose, { Schema } from "mongoose"
+import mongoose from "mongoose"
 
+/// Custom node type
+export type node = {
+    nodeId: string,
+    title: string,
+}
+
+/// custom node schema
+const nodeSchema = new mongoose.Schema<node>({
+    nodeId: String,
+    title: String,
+})
+
+/// custom edge type
 export type edge = {
     source: string,
     destination: string,
@@ -17,10 +30,13 @@ const edgeSchema = new mongoose.Schema<edge>({
     }
 })
 
+
+/// Flow interface
 export interface flow {
     user: string,
     title: string,
-    nodes: mongoose.Types.Array<string>
+    type: string,
+    nodes:  mongoose.Types.Array<node>,
     edges: mongoose.Types.Array<edge>
 }
 
@@ -35,8 +51,12 @@ const flowSchema = new mongoose.Schema<flow>({
         type: String,
         required: true,
     },
+    type: {
+        type: String,
+        require: true,
+    },
     nodes: {
-        type: [String],
+        type: [nodeSchema],
         require: true 
     },
     edges: {
