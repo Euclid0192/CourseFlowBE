@@ -39,7 +39,7 @@ const login = async (req: RequestBody<{ username: string, password: string}>, re
         },
         process.env.SECRET_ACCESS_TOKEN!,
         {
-            expiresIn: '1m'
+            expiresIn: '30m'
         }
     )
 
